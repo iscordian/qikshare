@@ -3,11 +3,58 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>QikShare - P2P File Transfer</title>
+    
+    <!-- Primary Meta Tags -->
+    <title>QikShare | Fast, Serverless P2P File Sharing</title>
+    <meta name="title" content="QikShare | Fast, Serverless P2P File Sharing">
+    <meta name="description" content="Share files of any size instantly over your local Wi-Fi network with QikShare. Zero servers, zero internet data usage, fully secure peer-to-peer WebRTC transfer.">
+    <meta name="keywords" content="P2P file transfer, WebRTC file sharing, LAN file share, offline file drop, serverless file sharing, send files over wifi, QikShare">
+    <meta name="author" content="Kaushik Roy">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://iscordian.is-a.dev/qikshare/">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://iscordian.is-a.dev/qikshare/">
+    <meta property="og:title" content="QikShare | Fast, Serverless P2P File Sharing">
+    <meta property="og:description" content="Share files instantly over your local network. Zero servers, zero internet data usage, fully secure WebRTC transfer.">
+    <!-- Replace with a real image URL once you have a screenshot of your app -->
+    <!-- <meta property="og:image" content="https://images.unsplash.com/photo-1618401471353-b98afee0b2eb?q=80&w=1200&auto=format&fit=crop"> -->
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://your-github-username.github.io/qikshare/">
+    <meta property="twitter:title" content="QikShare | Fast, Serverless P2P File Sharing">
+    <meta property="twitter:description" content="Share files instantly over your local network. Zero servers, zero internet data usage, fully secure WebRTC transfer.">
+    <!-- <meta property="twitter:image" content="https://images.unsplash.com/photo-1618401471353-b98afee0b2eb?q=80&w=1200&auto=format&fit=crop"> -->
+
+    <!-- Schema.org Markup for Google -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "QikShare",
+      "url": "https://iscordian.is-a.dev/qikshare/",
+      "description": "A serverless, peer-to-peer file sharing application using WebRTC for local network transfers.",
+      "applicationCategory": "UtilitiesApplication",
+      "operatingSystem": "Any",
+      "author": {
+        "@type": "Person",
+        "name": "Kaushik Roy"
+      },
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      }
+    }
+    </script>
+
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- PeerJS for WebRTC Signaling -->
     <script src="https://unpkg.com/peerjs@1.5.2/dist/peerjs.min.js"></script>
+    
     <style>
         /* Anime-style animated background */
         body {
@@ -49,31 +96,31 @@
     <main class="glass-panel w-full max-w-lg rounded-3xl p-8 flex flex-col gap-6 relative z-10 transition-all duration-300">
         
         <!-- Header -->
-        <div class="text-center">
+        <header class="text-center">
             <h1 class="text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-blue-400 tracking-tight">QikShare</h1>
             <p class="text-white/60 text-sm mt-1">Zero-server local network transfer</p>
-        </div>
+        </header>
 
         <!-- Connection Status & ID -->
-        <div class="bg-black/20 rounded-2xl p-4 text-center border border-white/5">
-            <p class="text-sm text-white/70 mb-1">Your Device PIN</p>
+        <section class="bg-black/20 rounded-2xl p-4 text-center border border-white/5" aria-live="polite">
+            <h2 class="text-sm text-white/70 mb-1">Your Device PIN</h2>
             <div class="flex items-center justify-center gap-3">
-                <span id="my-id" class="text-3xl font-mono font-bold tracking-widest text-purple-300">------</span>
+                <span id="my-id" class="text-3xl font-mono font-bold tracking-widest text-purple-300" aria-label="Your connection PIN">------</span>
             </div>
             <p id="status-text" class="text-xs text-blue-300 mt-2">Connecting to signaling server...</p>
-        </div>
+        </section>
 
         <!-- Connect to Peer -->
-        <div id="connect-section" class="flex flex-col gap-3">
-            <label class="text-sm text-white/80">Connect to Receiver:</label>
+        <section id="connect-section" class="flex flex-col gap-3">
+            <label for="peer-id-input" class="text-sm text-white/80">Connect to Receiver:</label>
             <div class="flex gap-2">
-                <input type="text" id="peer-id-input" placeholder="Enter 6-digit PIN" class="flex-1 bg-black/30 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-white/30 outline-none focus:border-purple-500 focus:ring-1 focus:ring-purple-500 transition-all text-center font-mono text-lg" maxlength="6">
-                <button id="connect-btn" class="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-500 hover:to-blue-500 px-6 py-3 rounded-xl font-semibold shadow-lg shadow-purple-500/30 transition-all active:scale-95">Connect</button>
+                <input type="text" id="peer-id-input" placeholder="Enter 6-digit PIN" aria-label="Enter the receiver's 6-digit PIN" class="flex-1 bg-black/30 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-white/30 outline-none focus:border-purple-500 focus:ring-1 focus:ring-purple-500 transition-all text-center font-mono text-lg" maxlength="6">
+                <button id="connect-btn" aria-label="Connect to peer" class="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-500 hover:to-blue-500 px-6 py-3 rounded-xl font-semibold shadow-lg shadow-purple-500/30 transition-all active:scale-95">Connect</button>
             </div>
-        </div>
+        </section>
 
         <!-- File Transfer UI (Hidden initially) -->
-        <div id="transfer-section" class="hide flex-col gap-4">
+        <section id="transfer-section" class="hide flex-col gap-4">
             
             <!-- Connected Status -->
             <div class="flex items-center justify-between bg-green-500/20 border border-green-500/30 text-green-300 px-4 py-2 rounded-xl text-sm">
@@ -81,31 +128,31 @@
                     <div class="w-2 h-2 rounded-full bg-green-400 animate-pulse"></div>
                     Connected securely
                 </span>
-                <button id="disconnect-btn" class="text-white/50 hover:text-red-400 transition-colors">Disconnect</button>
+                <button id="disconnect-btn" aria-label="Disconnect from peer" class="text-white/50 hover:text-red-400 transition-colors">Disconnect</button>
             </div>
 
             <!-- Drag & Drop Zone -->
             <div id="drop-zone" class="border-2 border-dashed border-white/20 hover:border-purple-400 rounded-2xl p-8 text-center transition-all bg-black/10 cursor-pointer flex flex-col items-center justify-center gap-3 group relative">
-                <input type="file" id="file-input" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer">
+                <input type="file" id="file-input" aria-label="Select file to send" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer">
                 <svg class="w-10 h-10 text-white/40 group-hover:text-purple-400 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path></svg>
                 <p class="text-sm text-white/70">Drag & drop a file here or <span class="text-purple-400 font-medium">browse</span></p>
             </div>
 
             <!-- Progress Bar -->
-            <div id="progress-container" class="hide flex-col gap-2 bg-black/20 p-4 rounded-xl border border-white/5">
+            <div id="progress-container" class="hide flex-col gap-2 bg-black/20 p-4 rounded-xl border border-white/5" aria-live="polite">
                 <div class="flex justify-between text-xs text-white/70 mb-1">
                     <span id="file-name" class="truncate max-w-[60%]">file.mp4</span>
                     <span id="transfer-stats">0 MB/s • 0s left</span>
                 </div>
                 <div class="w-full bg-black/50 rounded-full h-2.5 overflow-hidden">
-                    <div id="progress-bar" class="bg-gradient-to-r from-purple-500 to-blue-500 h-2.5 rounded-full w-0 transition-all duration-100 ease-out"></div>
+                    <div id="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" class="bg-gradient-to-r from-purple-500 to-blue-500 h-2.5 rounded-full w-0 transition-all duration-100 ease-out"></div>
                 </div>
                 <div class="text-right text-xs font-mono text-purple-300 mt-1" id="progress-percent">0%</div>
             </div>
 
             <!-- Received Files List -->
             <div id="received-files" class="flex flex-col gap-2 mt-2"></div>
-        </div>
+        </section>
 
     </main>
 
@@ -117,7 +164,7 @@
     <script>
         // --- WebRTC & App Logic ---
         
-        const CHUNK_SIZE = 16384; // 16KB per chunk (Optimal for WebRTC DataChannels)
+        const CHUNK_SIZE = 16384; 
         let peer = null;
         let conn = null;
         let myPin = null;
@@ -129,7 +176,6 @@
         const peerIdInput = document.getElementById('peer-id-input');
         const connectSection = document.getElementById('connect-section');
         const transferSection = document.getElementById('transfer-section');
-        const dropZone = document.getElementById('drop-zone');
         const fileInput = document.getElementById('file-input');
         const progressContainer = document.getElementById('progress-container');
         const progressBar = document.getElementById('progress-bar');
@@ -139,7 +185,7 @@
         const receivedFilesList = document.getElementById('received-files');
         const disconnectBtn = document.getElementById('disconnect-btn');
 
-        // Generate a random 6-digit PIN for easy sharing
+        // Generate a random 6-digit PIN
         function generatePIN() {
             return Math.floor(100000 + Math.random() * 900000).toString();
         }
@@ -147,13 +193,11 @@
         // Initialize PeerJS
         function initPeer() {
             myPin = generatePIN();
-            // Prefix to ensure global uniqueness on PeerJS public server while keeping pin simple
             const fullId = `qikshare-app-${myPin}`; 
             
             peer = new Peer(fullId, {
                 debug: 2,
                 config: {
-                    // Stun servers help establish connection; ICE uses local network candidates first
                     'iceServers': [
                         { urls: 'stun:stun.l.google.com:19302' },
                     ]
@@ -166,7 +210,6 @@
                 statusText.className = "text-xs text-green-400 mt-2";
             });
 
-            // Listen for incoming connections
             peer.on('connection', (connection) => {
                 handleConnection(connection);
             });
@@ -178,7 +221,6 @@
             });
         }
 
-        // Connect button logic
         connectBtn.addEventListener('click', () => {
             const targetPin = peerIdInput.value.trim();
             if (targetPin.length !== 6) {
@@ -187,33 +229,23 @@
             }
             const targetId = `qikshare-app-${targetPin}`;
             statusText.innerText = "Connecting...";
-            const connection = peer.connect(targetId, {
-                reliable: true
-            });
+            const connection = peer.connect(targetId, { reliable: true });
             handleConnection(connection);
         });
 
-        // Disconnect logic
         disconnectBtn.addEventListener('click', () => {
-            if(conn) {
-                conn.close();
-            }
+            if(conn) conn.close();
             resetUI();
         });
 
-        // Setup the data channel connection
         function handleConnection(connection) {
             conn = connection;
-            
             conn.on('open', () => {
                 connectSection.classList.add('hide');
                 transferSection.classList.remove('hide');
                 statusText.innerText = "Connected to peer!";
             });
-
-            // Handle incoming data
             conn.on('data', receiveData);
-
             conn.on('close', () => {
                 alert("Connection closed by peer.");
                 resetUI();
@@ -229,55 +261,33 @@
             progressContainer.classList.add('hide');
         }
 
-        // --- File Sending Logic ---
-        
-        let fileQueue = [];
-        let isSending = false;
-
         fileInput.addEventListener('change', (e) => {
-            if (e.target.files.length > 0) {
-                sendFile(e.target.files[0]);
-            }
+            if (e.target.files.length > 0) sendFile(e.target.files[0]);
         });
 
         function sendFile(file) {
-            if (!conn || !conn.open) {
-                alert("Not connected to a peer!");
-                return;
-            }
-
-            // Show progress UI
+            if (!conn || !conn.open) return alert("Not connected to a peer!");
             progressContainer.classList.remove('hide');
             fileNameEl.innerText = file.name;
             
-            // 1. Send Metadata
             conn.send(JSON.stringify({
-                type: 'metadata',
-                name: file.name,
-                size: file.size,
-                filetype: file.type
+                type: 'metadata', name: file.name, size: file.size, filetype: file.type
             }));
 
-            // 2. Read and Send Chunks
             const reader = new FileReader();
             let offset = 0;
             let startTime = Date.now();
 
             reader.onload = (e) => {
-                // Send chunk
                 conn.send(e.target.result);
                 offset += e.target.result.byteLength;
-
-                // Update UI Stats
                 updateProgress(offset, file.size, startTime);
 
-                // Buffer control: wait if network is congested
                 if (conn.dataChannel.bufferedAmount > CHUNK_SIZE * 64) {
                     setTimeout(readSlice, 50);
                 } else if (offset < file.size) {
                     readSlice();
                 } else {
-                    // EOF
                     conn.send(JSON.stringify({ type: 'EOF' }));
                     setTimeout(() => {
                         transferStats.innerText = "Transfer Complete!";
@@ -297,71 +307,41 @@
         function updateProgress(current, total, startTime) {
             const percent = ((current / total) * 100).toFixed(1);
             progressBar.style.width = percent + '%';
+            progressBar.setAttribute('aria-valuenow', percent);
             progressPercent.innerText = percent + '%';
 
-            // Calculate Speed and ETA
-            const elapsed = (Date.now() - startTime) / 1000; // seconds
+            const elapsed = (Date.now() - startTime) / 1000;
             if (elapsed > 0) {
                 const speedBps = current / elapsed;
                 const speedMbps = (speedBps / (1024 * 1024)).toFixed(2);
-                
-                const remainingBytes = total - current;
-                const etaSeconds = (remainingBytes / speedBps).toFixed(0);
-                
+                const etaSeconds = ((total - current) / speedBps).toFixed(0);
                 transferStats.innerText = `${speedMbps} MB/s • ${etaSeconds}s left`;
             }
         }
-
-        // --- File Receiving Logic ---
         
-        let incomingFileInfo = null;
-        let incomingFileData = [];
-        let receivedBytes = 0;
-        let receiveStartTime = 0;
+        let incomingFileInfo = null, incomingFileData = [], receivedBytes = 0, receiveStartTime = 0;
 
         function receiveData(data) {
             if (typeof data === 'string') {
                 const msg = JSON.parse(data);
-                
                 if (msg.type === 'metadata') {
-                    // Prepare for new file
-                    incomingFileInfo = msg;
-                    incomingFileData = [];
-                    receivedBytes = 0;
-                    receiveStartTime = Date.now();
-                    
+                    incomingFileInfo = msg; incomingFileData = []; receivedBytes = 0; receiveStartTime = Date.now();
                     progressContainer.classList.remove('hide');
                     fileNameEl.innerText = "Receiving: " + msg.name;
                     progressBar.style.width = '0%';
                     progressBar.classList.remove('bg-green-500');
-
                 } else if (msg.type === 'EOF') {
-                    // File complete, construct Blob
                     const blob = new Blob(incomingFileData, { type: incomingFileInfo.filetype });
                     const url = URL.createObjectURL(blob);
-                    
-                    // Create download link in UI
                     createDownloadLink(incomingFileInfo.name, url, incomingFileInfo.size);
-                    
                     transferStats.innerText = "Download Complete!";
                     progressBar.classList.add('bg-green-500');
-                    
-                    // Reset variables for next file
-                    incomingFileInfo = null;
-                    incomingFileData = [];
+                    incomingFileInfo = null; incomingFileData = [];
                 }
             } else if (data instanceof ArrayBuffer) {
-                // Handle binary chunk
                 incomingFileData.push(data);
                 receivedBytes += data.byteLength;
-                
-                if (incomingFileInfo) {
-                    updateProgress(receivedBytes, incomingFileInfo.size, receiveStartTime);
-                    
-                    // Media Streaming feature (Optional enhancement to play while downloading)
-                    // Note: Implementing true streaming requires MediaSource Extensions (MSE) which is complex.
-                    // This app currently waits for full download to maintain zero-server reliability.
-                }
+                if (incomingFileInfo) updateProgress(receivedBytes, incomingFileInfo.size, receiveStartTime);
             }
         }
 
@@ -369,7 +349,6 @@
             const sizeMB = (size / (1024*1024)).toFixed(2);
             const fileItem = document.createElement('div');
             fileItem.className = "flex items-center justify-between bg-white/5 border border-white/10 p-3 rounded-xl mt-2";
-            
             fileItem.innerHTML = `
                 <div class="flex items-center gap-3 overflow-hidden">
                     <div class="bg-purple-500/20 p-2 rounded-lg text-purple-300">
@@ -380,16 +359,14 @@
                         <span class="text-xs text-white/50">${sizeMB} MB</span>
                     </div>
                 </div>
-                <a href="${url}" download="${filename}" class="bg-white/10 hover:bg-white/20 text-white p-2 rounded-lg transition-colors">
+                <a href="${url}" download="${filename}" aria-label="Download ${filename}" class="bg-white/10 hover:bg-white/20 text-white p-2 rounded-lg transition-colors">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
                 </a>
             `;
             receivedFilesList.prepend(fileItem);
         }
 
-        // Initialize App
         initPeer();
-
     </script>
 </body>
 </html>
